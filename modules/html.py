@@ -8,6 +8,8 @@ __license__ = "LGPL 3.0"
 
 # Inspired by tuto5.py and several examples from fpdf.org, html2fpdf, etc.
 
+# Hack by Richard Warg (RJW)
+
 from fpdf import FPDF
 from HTMLParser import HTMLParser
 from htmlentitydefs import entitydefs
@@ -63,7 +65,9 @@ class HTML2FPDF(HTMLParser):
         self.thead = None
         self.tfoot = None
         self.theader_out = self.tfooter_out = False
+        # RJW: TD data buffer
         self.cell_text = ""
+        # RJW: TD process switch
         self.in_td = False
         self.hsize = dict(h1=2, h2=1.5, h3=1.17, h4=1, h5=0.83, h6=0.67)
        
@@ -81,7 +85,7 @@ class HTML2FPDF(HTMLParser):
         #txt = html_unescape(txt)
         # logger.info('in the handle_data() %s TD= %r', txt, self.get_td())
         if self.td is not None: # drawing a table?
-            if  self.in_td:   # inside the table cell so append to the text
+            if  self.in_td:   # RJW: inside the table cell so append to the text
                 self.cell_text += txt
                 return
                 
@@ -267,6 +271,7 @@ class HTML2FPDF(HTMLParser):
             self.pdf.set_x(self.table_offset)
         if tag=='td':
             self.td = dict([(k.lower(), v) for k,v in attrs.items()])
+            # RJW: turn on the switch to control behavior inside the TD
             self.in_td = True
         if tag=='th':
             self.td = dict([(k.lower(), v) for k,v in attrs.items()])
@@ -351,11 +356,12 @@ class HTML2FPDF(HTMLParser):
            
            
             if self.in_td:
-                self.in_td = False
+                self.in_td = False  #RJW: turn the TD switch off and re-invoke handle_data with 
+                                    # the contents of the text_buffer
                 self.handle_data(self.cell_text)
                        
             self.td = None
-            self.cell_text = ""
+            self.cell_text = ""  # RJW: clear the TD text buffer
             
             self.th = False
         if tag=='font':
