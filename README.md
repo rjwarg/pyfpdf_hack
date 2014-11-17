@@ -22,9 +22,9 @@ is converted to the following PDF
 --------------------------------------------------------------------
 
 The hack is in modules/html.py.  It adds a string buffer and a switch.  The switch is turned on when the program is 
-processing a table column.  
-While switch is on the "handle\_data()" functions td handler will push the txt data into the 'cell\_txt' buffer. 
-When the end of the </TD> column is reached the switch is turned off and handle_data() is called. 
+processing a table column \<TD\>.  
+While the switch is on, the handle\_data() function's td handler will push the txt data into the 'cell\_txt' buffer. 
+When the end of the column\</TD\> is reached the switch is turned off and handle_data() is called. 
 In this way the entire string is placed into a single PDF cell.
 
 SEE: controllers/default.py/listing() and modules/html.py
