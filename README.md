@@ -19,6 +19,6 @@ is converted to the following PDF
 | row 2       | boy            | girl           | Wt               |
 --------------------------------------------------------------------
 
-The hack is in modules/html.py.  It adds a string buffer and a switch.  The switch is turned on when the program is processing a <TD> column.  While switch is on the "handle_data()" functions td handler will push the txt data into the 'cell_txt' buffer. When the end of the </TD> column is reached the switch is turned off and handle_data() is called. In this way the entire string is placed into one PDF cell.
+The hack is in modules/html.py.  It adds a string buffer and a switch.  The switch is turned on when the program is processing a "<TD>" column.  While switch is on the "handle_data()" functions td handler will push the txt data into the 'cell_txt' buffer. When the end of the </TD> column is reached the switch is turned off and handle_data() is called. In this way the entire string is placed into one PDF cell.
 
 SEE: controllers/default.py/listing.pdf and modules/html.py
